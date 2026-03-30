@@ -1,13 +1,13 @@
-Portfolio
+####Portfolio
 
-### Mail Forwarding
-Create a centralized system to input emails from various platforms into a Notion table.
+### Automated Reservation Management System (JavaScript)
+Developed a centralized automation system using Google Apps Script (GAS) to parse incoming rental car reservation emails from various platforms and automatically input the parsed data into a Notion database via the Notion API.
 
 <details>
-<summary><b>View Code (Click to expand)</b></summary>
+<summary><b>View Code</b></summary>
 
-```js
-# [const NOTION_API_TOKEN = '-';
+```javascript
+const NOTION_API_TOKEN = '-';
 const DATABASE_ID = '-';
 const PROCESSED_LABEL_NAME = 'GAS Processed';
 const IGNORED_LABEL_NAME = 'GAS Ignored';
@@ -82,11 +82,11 @@ function processEmailsToNotion() {
       const isRakuten = subject.includes("楽天トラベル") && (subject.includes("予約受付") || subject.includes("キャンセル") || subject.includes("変更") || subject.includes("予約番号"));
       const isJalan = subject.includes("じゃらんnet") && (subject.includes("予約通知") || subject.includes("キャンセル") || subject.includes("変更"));
       const isSkyticket = subject.includes("skyticket") || subject.includes("スカイチケット");
-      const isERenta = subject.includes("eレンタカー") || /@kuukou-rentacar\.com|@excia-world\.com/i.test(from);
-      const isSamurai = subject.includes("サムライレンタカー") || subject.includes("Samurai");
+      const isERenta = subject.includes("-レンタカー") || /@-\.com|@-\.com/i.test(from);
+      const is- = subject.includes("-レンタカー") || subject.includes("-");
       const isTocoo = subject.includes("Tocoo");
 
-      if (!isRakuten && !isJalan && !isSkyticket && !isERenta && !isSamurai && !isTocoo) {
+      if (!isRakuten && !isJalan && !isSkyticket && !isERenta && !is- && !isTocoo) {
         continue; // 該当しない場合は本文を取得せず次へ
       }
 
@@ -108,8 +108,8 @@ function processEmailsToNotion() {
         } else {
           data = parseOwnSiteBooking(body, date, statusPrefix);
         }
-      } else if (isSamurai && (body.includes("Name") || subject.includes("enquiry") || body.includes("Reservation ID") || statusPrefix !== "")) {
-        data = parseSamuraiInquiry(body, date, statusPrefix);
+      } else if (is- && (body.includes("Name") || subject.includes("enquiry") || body.includes("Reservation ID") || statusPrefix !== "")) {
+        data = parse-Inquiry(body, date, statusPrefix);
       } else if (isTocoo) {
         data = parseTocoo(body, date, statusPrefix);
       }
@@ -257,7 +257,7 @@ function parseOwnSiteBooking(body, date, statusPrefix) {
 
   return {
     date: date,
-    serviceOption: "予約 (eレンタ公式)",
+    serviceOption: "予約 (-レンタ公式)",
     id: id,
     name: name,
     tel: extractValue(body, ["電話番号"]),
@@ -282,7 +282,7 @@ function parseOwnSiteInquiry(body, date, statusPrefix) {
 
   return {
     date: date,
-    serviceOption: "メール問合せ (eレンタHP)",
+    serviceOption: "メール問合せ (-レンタHP)",
     id: "",
     name: name,
     tel: extractValue(body, ["お電話番号", "電話番号"]),
@@ -296,7 +296,7 @@ function parseOwnSiteInquiry(body, date, statusPrefix) {
   };
 }
 
-function parseSamuraiInquiry(body, date, statusPrefix) {
+function parse-Inquiry(body, date, statusPrefix) {
   let id = extractValue(body, ["Reservation ID", "No"]);
   let name = extractValue(body, ["Name", "Customer Name", "Customer name"]);
   let questions = extractValue(body, ["Message", "Inquiry", "Message Body"]);
@@ -309,7 +309,7 @@ function parseSamuraiInquiry(body, date, statusPrefix) {
 
   return {
     date: date,
-    serviceOption: "SAMURAIお問い合わせ",
+    serviceOption: "-お問い合わせ",
     id: id,
     name: name,
     tel: extractValue(body, ["Phone number", "Tel", "Phone"]),
@@ -420,7 +420,7 @@ function isAlreadyRegistered(data) {
 }
 
 function sendToNotion(data) {
-  const url = 'https://api.notion.com/v1/pages';
+  const url = '[https://api.notion.com/v1/pages](https://api.notion.com/v1/pages)';
   const properties = {};
 
   if (data.date) {
@@ -504,20 +504,19 @@ function createTimeDrivenTriggers() {
       .create();
       
   console.log("15分間隔の定期実行トリガーを作成しました。");
-}]
-
+}
 ```
 </details>
 
-### Training
-Create a quiz to measure the effectiveness of new employees at a rental car office.
+### New Employee Training Quiz Web App (PHP)
+Built an interactive web-based quiz application using PHP and JavaScript to measure and record the training progress of new employees at a rental car office, featuring automated email notifications for test results.
 
 <details>
-<summary><b>View Code (Click to expand)</b></summary>
+<summary><b>View Code</b></summary>
 
 ```php
-// [<?php
-$admin_email = "erentacarnarita@gmail.com"; 
+<?php
+$admin_email = "-@gmail.com"; 
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'submit_quiz') {
     $quiz_category = htmlspecialchars($_POST['quiz_category'] ?? '不明', ENT_QUOTES, 'UTF-8');
@@ -567,9 +566,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>成田教育シートクイズ</title>
+<title>教育シートクイズ</title>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap');
+@import url('[https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap](https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap)');
 body {
     background-color: #121212;
     color: #e0e0e0;
@@ -751,7 +750,7 @@ input[type="tel"]:focus { outline: none; border-color: #63b3ed; border-width: 2p
 <div class="quiz-wrapper">
     <div id="quiz-header">
         <div class="info-banner">
-            <strong>成田教育シート 確認クイズ</strong><br>
+            <strong>教育シート 確認クイズ</strong><br>
             マニュアル資料と動画の内容をもとに回答してください。
             <span id="progress-text" style="display:block; float:right; font-weight:bold; color:#fbd38d; margin-top:-24px;"></span>
         </div>
@@ -761,7 +760,7 @@ input[type="tel"]:focus { outline: none; border-color: #63b3ed; border-width: 2p
                 <strong>不明点はこちら</strong><br>
                 <span>NotebookLMに質問</span>
             </div>
-            <a href="https://notebooklm.google.com/notebook/7537c6e2-147e-49c2-82ac-4b1b2ebac161?authuser=1" target="_blank" class="chatbot-btn">質問する ↗</a>
+            <a href="[https://notebooklm.google.com/notebook/-)" target="_blank" class="chatbot-btn">質問する ↗</a>
         </div>
     </div>
 
@@ -802,14 +801,12 @@ input[type="tel"]:focus { outline: none; border-color: #63b3ed; border-width: 2p
     </div>
 </div>
 
-<!-- ===== PDF資料一覧 ===== -->
 <div class="pdf-wrapper">
     <div class="pdf-title">📑 マニュアル・資料一覧（全22項目）</div>
     <div class="pdf-grid">
         <?php for($i=1; $i<=22; $i++): ?>
         <div class="pdf-item" onclick="alert('項目<?php echo $i; ?>のPDFを開く処理（リンク）を追加します')">
-            <!-- 仮画像： onerror で画像がない場合はグレーのプレースホルダを表示 -->
-            <img src="./dummy-image.jpg" alt="項目<?php echo $i; ?>" onerror="this.src='data:image/svg+xml;charset=UTF-8,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22150%22 height=%22200%22 viewBox=%220 0 150 200%22%3E%3Crect width=%22150%22 height=%22200%22 fill=%22%23333%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 fill=%22%23777%22 font-size=%2214%22 text-anchor=%22middle%22 dominant-baseline=%22middle%22%3EIMAGE%3C/text%3E%3C/svg%3E'">
+            <img src="./dummy-image.jpg" alt="項目<?php echo $i; ?>" onerror="this.src='data:image/svg+xml;charset=UTF-8,%3Csvg xmlns=%22[http://www.w3.org/2000/svg%22](http://www.w3.org/2000/svg%22) width=%22150%22 height=%22200%22 viewBox=%220 0 150 200%22%3E%3Crect width=%22150%22 height=%22200%22 fill=%22%23333%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 fill=%22%23777%22 font-size=%2214%22 text-anchor=%22middle%22 dominant-baseline=%22middle%22%3EIMAGE%3C/text%3E%3C/svg%3E'">
             <span>項目<?php echo $i; ?></span>
         </div>
         <?php endfor; ?>
@@ -1002,10 +999,10 @@ const allQuizData = {
         questions: [
             {
                 num: "Q1",
-                q: "エクセルで作成する「予定表（発着票）」において、SAMURAIレンタカー経由の予約は「入庫」欄にどのように記載しますか？",
-                choices: ["「レンタカー」と入力する", "「SAMURAI」と入力する", "空欄のままにする"],
-                ans: "「SAMURAI」と入力する",
-                exp: "eレンタカー経由の場合は「レンタカー」、SAMURAIレンタカー経由の場合は「SAMURAI」と入力して区別します。"
+                q: "エクセルで作成する「予定表（発着票）」において、-レンタカー経由の予約は「入庫」欄にどのように記載しますか？",
+                choices: ["「レンタカー」と入力する", "「-」と入力する", "空欄のままにする"],
+                ans: "「-」と入力する",
+                exp: "-レンタカー経由の場合は「レンタカー」、-レンタカー経由の場合は「-」と入力して区別します。"
             },
             {
                 num: "Q2",
@@ -1031,7 +1028,6 @@ const allQuizData = {
             {
                 num: "Q5",
                 q: "事故発生時の初動対応として、お客様に案内する「3つの連絡先」のうち、保険会社の事故受付専用ダイヤルはどれですか？",
-                choices: "0120-256-110",
                 choices: ["0120-365-110", "0120-256-110", "0120-110-110"],
                 ans: "0120-256-110",
                 exp: "事故は末尾110、ロードサービス（事故以外のトラブル）は末尾110（0120-365-110）と使い分けます。"
@@ -1258,12 +1254,11 @@ function showFinalResult() {
 
 </script>
 </body>
-</html>]
-
+</html>
 ```
 </details>
 
-### Creative Works
+### Creative (Films)
 **Instagram:** [@tk.haru](https://instagram.com/tk.haru)
 
 ---
