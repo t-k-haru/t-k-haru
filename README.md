@@ -1,9 +1,6 @@
 ## Hi, I'm Haru
 
-Software engineer and AI-automation specialist based in Tokyo. I build business systems that remove repetitive manual work: AI agents, web apps, and workflow automation with Claude API, Python, PHP/React, and Google Apps Script.
-
-Website: https://icebergs.jp/
-LinkedIn: https://www.linkedin.com/in/tkharu
+A project manager and AI-automation specialist based in Tokyo. I lead business-system projects and engineer them hands-on — AI agents, web apps, and workflow automation that remove repetitive manual work, built with Claude API, Python, PHP/React, and Google Apps Script.
 
 ---
 
